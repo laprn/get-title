@@ -14,3 +14,6 @@ def display_title(url):
         'title': title,
         'url': url
     }
+
+if __name__ == '__main__':
+    app.run()
