@@ -4,11 +4,11 @@ import scrape
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
+def greeting():
     return "<code>GET /url:https://example.com</code>"
 
 @app.route('/<path:url>')
-def display_title(url):
+def display_json(url):
     status, message, res = scrape.fetch_title(url)
     return {
         'status': status,
