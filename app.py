@@ -5,13 +5,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return "<p>Hello, Flask!</p>"
+    return "<code>GET /url:https://example.com</code>"
 
 @app.route('/<path:url>')
 def display_title(url):
-    title = scrape.fetch_title(url)
+    status, message, res = scrape.fetch_title(url)
     return {
-        'title': title,
+        'status': status,
+        'message': message,
+        'title': res,
         'url': url
     }
 
