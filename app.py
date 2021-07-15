@@ -1,5 +1,5 @@
 from flask import Flask
-import scrape
+from fetchhtmlinfo import fetch_header
 
 app = Flask(__name__)
 
@@ -9,13 +9,8 @@ def greeting():
 
 @app.route('/<path:url>')
 def display_json(url):
-    status, message, res = scrape.fetch_title(url)
-    return {
-        'status': status,
-        'message': message,
-        'title': res,
-        'url': url
-    }
+    result = fetch_header.fetch_title(url)
+    return result
 
 if __name__ == '__main__':
     app.run()
