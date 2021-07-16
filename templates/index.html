@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            color:#121212;
+        }
+        .container {
+            width: 60%;
+            margin: auto;
+        }
+        #search {
+            width: 95%;
+            height: 2.4rem;
+            border-radius: 4px;
+            font-size: 24px;
+            border: none;
+            box-shadow: 0 0 0 1px #ccc inset;
+        }
+        @media screen and (max-width: 480px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Usage</h1>
+        <code>GET /search?url=&lt;url&gt;</code>or<code>curl https://cocno-title-fetcher/&lt;url&gt;</code>
+    
+    <form action="/search" method="GET" onsubmit="return false;">
+    <input type="text" name="url" placeholder="input url" onchange="changeHandler(this)" id="search">
+    </form>
+    <p>title:</p>
+    <p id ="title"></p>
+    </div>
+    <script>
+        function changeHandler(input_value) {
+            const url = $(input_value).serialize();
+            $.ajax({
+                url: `/search?${url}`,
+                data: url,
+                dataType: "json",
+            }).done(data => {
+                console.log("Ajax通信 成功");
+                console.log(data['title']);
+                $("#title").html(data['title']);
+            }).fail(data => {
+                console.log("Ajax通信 失敗");
+                $("#title").html("Faild fetching data.");
+            });
+        }
+    </script>
+</body>
+</html>
