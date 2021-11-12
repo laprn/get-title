@@ -22,6 +22,7 @@
             border: none;
             box-shadow: 0 0 0 1px #ccc inset;
             padding-left: 1rem;
+            margin: 1rem 0rem;
         }
         @media screen and (max-width: 480px) {
             .container {
@@ -32,32 +33,46 @@
 </head>
 <body>
     <div class="container">
-        <h1>Usage</h1>
-        <p><code>GET /search?url=&lt;url&gt;</code></p>or
-        <p><code>curl https://cocno-title-fetcher/&lt;url&gt;</code></p>
-    
-    <form action="/search" method="GET" onsubmit="return false;">
-    <input type="text" name="url" placeholder="input url" onchange="changeHandler(this)" id="search">
+        <h1>URL to Title</h1>
+        <h2>使い方</h2>
+        <p>urlからhtmlのタイトル要素の中身を取得します。http(s)://から始まるURLを入力し、送信を押すとタイトルが取得できます。</p>
+        <p><code>curl</code>にも対応しています。以下のように入力するとタイトルが取得できます。</p>
+        <p><code>curl https://cocno-title-fetcher.herokuapp.com/&lt;url&gt;</code></p>
+        <p>例：<code>curl https://cocno-title-fetcher.herokuapp.com/https://sample.com</code></p>
+        <h2>戻り値</h2>
+        <p>戻り値は<code>json</code>で、以下のようになります。</p>
+        <table>
+            <tr>
+                <td>message</td>
+                <td>結果のメッセージ</td>
+            </tr>
+            <tr>
+                <td>query</td>
+                <td>送信したクエリー</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>ステータス</td>
+            </tr>
+            <tr>
+                <td>title</td>
+                <td>タイトル</td>
+            </tr>
+        </table>
+    <form action="/search" method="GET">
+    <input type="text" name="url" placeholder="input url" id="search">
+    <input type="submit" >
     </form>
     <p>title:</p>
-    <p id ="title"></p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message['title'] }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     </div>
-    <script>
-        function changeHandler(input_value) {
-            const url = $(input_value).serialize();
-            $.ajax({
-                url: `/search?${url}`,
-                data: url,
-                dataType: "json",
-            }).done(data => {
-                console.log("Ajax通信 成功");
-                console.log(data['title']);
-                $("#title").html(data['title']);
-            }).fail(data => {
-                console.log("Ajax通信 失敗");
-                $("#title").html("Faild fetching data.");
-            });
-        }
-    </script>
 </body>
 </html>
