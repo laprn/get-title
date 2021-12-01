@@ -2,9 +2,9 @@ from bs4 import BeautifulSoup as bs
 import requests
 import sys
 
-status = ''
-message = ''
-def fetch_title(url):
+status: str = ''
+message: str = ''
+def fetch_title(url: str) -> tuple:
     try:
         soup = bs(requests.get(url).text, 'lxml')
         status = 'OK'
